@@ -2,7 +2,7 @@
 
 An extremely fast, single-threaded, allocation-free **N-dimensional grid
 traversal** ("wayfinder"). Given two points in a 2D / 3D / 4D / xD grid, it
-walks every cell the straight line between them passes through — in order, at
+walks every cell the straight line between them passes through - in order, at
 nanosecond-per-cell speed, on the CPU, with **zero heap allocation**.
 
 It is the Amanatides & Woo voxel-traversal algorithm (DDA) generalized to
@@ -10,12 +10,12 @@ arbitrary dimensions.
 
 ---
 
-## What this is — and how it relates to A\*
+## What this is - and how it relates to A\*
 
 Read this before assuming it is a drop-in A\* replacement.
 
 This is a **deterministic line walk**, not a graph search. It answers *"which
-cells lie on the straight line from A to B?"* — the core of line-of-sight,
+cells lie on the straight line from A to B?"* - the core of line-of-sight,
 visibility, ray casting, lightmap tracing, and collision sweeps.
 
 Because it never searches, it has **no priority queue, no open/closed sets,
@@ -81,7 +81,7 @@ make portable
 
 ### Running under tmux
 
-You prefer one tmux session per independent process — so:
+You prefer one tmux session per independent process - so:
 
 ```bash
 tmux new -s wayfind-bench      # dedicated session for the benchmark
@@ -117,7 +117,7 @@ size_t crossed = wf_cells(&g, from, to, visit, NULL);
 
 **Line of sight / "navigation":** pass a visitor that looks up your obstacle
 map and returns non-zero on a blocked cell (see `example.c`). The walk stops at
-the first wall — that single boolean *is* "can A reach B in a straight line?".
+the first wall - that single boolean *is* "can A reach B in a straight line?".
 
 ---
 
@@ -126,7 +126,7 @@ the first wall — that single boolean *is* "can A reach B in a straight line?".
 The core uses only fixed stack scratch: four `WF_MAX_DIMS`-element arrays
 (default 8 dims → 4 × 64 B = **256 bytes**, cache-line aligned). It never
 touches the heap. `wf_collect` writes only into the buffer **you** own; if it's
-too small it keeps counting but stops writing — nothing reallocates behind your
+too small it keeps counting but stops writing - nothing reallocates behind your
 back. If you ever want a self-growing path, allocate a few KB up front and pass
 it in; the design intentionally keeps allocation in your hands.
 
@@ -182,7 +182,7 @@ Notes for ports:
 
 ## A note on SQLite, scheduling, and databases
 
-`wayfind` is a **stateless, in-memory algorithm** — it needs no database and no
+`wayfind` is a **stateless, in-memory algorithm** - it needs no database and no
 scheduler, so none are bundled (that would also break the "few KB, zero
 dependency, easily ported" goals). If a *surrounding system* later needs them:
 
@@ -200,7 +200,7 @@ dependency, easily ported" goals). If a *surrounding system* later needs them:
   ```
 
   A small poller (`SELECT … WHERE status='pending' AND run_at<=strftime('%s','now')`)
-  claims and runs due jobs — keeping scheduling in SQLite rather than cron.
+  claims and runs due jobs - keeping scheduling in SQLite rather than cron.
 
 Say the word and I'll wire that harness up around the algorithm.
 
@@ -210,12 +210,12 @@ Say the word and I'll wire that harness up around the algorithm.
 
 | File         | What it is                                            |
 | ------------ | ----------------------------------------------------- |
-| `wayfind.h`  | Public API.                                           |
-| `wayfind.c`  | The algorithm (the only file you port).               |
-| `bench.c`    | Reproduces the spec test matrix.                      |
-| `example.c`  | Segment walk, line-of-sight, 4D collect.              |
-| `Makefile`   | Build on Debian.                                       |
-| `.gitignore` | Ignores build artifacts.                              |
+| `wayfind.h`  | Public API                                            |
+| `wayfind.c`  | The algorithm (the only file you port)                |
+| `bench.c`    | Reproduces the spec test matrix                       |
+| `example.c`  | Segment walk, line-of-sight, 4D collect               |
+| `Makefile`   | Build on Debian                                       |
+| `.gitignore` | Ignores build artifacts                               |
 
 ---
 
