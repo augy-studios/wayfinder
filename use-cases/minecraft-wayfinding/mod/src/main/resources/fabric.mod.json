@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "wayfinder",
+  "version": "1.0.0",
+  "name": "Wayfinder",
+  "description": "Theta* pathfinding for Minecraft using the wayfinder voxel traversal algorithm.",
+  "authors": [
+    "Augy Studios"
+  ],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.augystudios.wayfinder.WayfinderMod"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.15.0",
+    "fabric-api": "*",
+    "minecraft": "~1.21"
+  }
+}
